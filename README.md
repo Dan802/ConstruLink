@@ -1,8 +1,14 @@
 # ManosYa
 
+> [!IMPORTANT]  
+> Ejecutar git pull antes de realizar git push
+
 # Primer paso
+```
 npm i 
+```
 
 # Segundo paso
+```
 npm run dev
-npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch
+```
