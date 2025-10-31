@@ -4,6 +4,8 @@ import Proyectos from "./views/ProyectosPage.jsx"
 import Profesionales from "./views/ProfesionalesPage.jsx"
 import Login from "./views/LoginPage.jsx"
 import Index from "./views/InicioPage.jsx"
+import Registro from "./views/RegistroPage.jsx"
+import Admin from "./views/AdminPage.jsx"
 
 export default function AppRouter() {
   return (
@@ -17,6 +19,10 @@ export default function AppRouter() {
           <Route path="/profesionales" element={<Profesionales />} />
 
           <Route path="/login" element={<Login />} />
+
+          <Route path="/registro" element={<Registro />} />
+
+          <Route path="/admin" element={<Admin />} />
 
         </Route>
       </Routes>

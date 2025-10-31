@@ -39,7 +39,6 @@ export default function PresupuestoSection() {
           Profesionales Disponibles
         </h2>
 
-        {/* Barra de búsqueda y filtro */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10">
           <input
             type="text"
@@ -59,7 +58,6 @@ export default function PresupuestoSection() {
           </select>
         </div>
 
-        {/* Lista de profesionales */}
         <div className="grid md:grid-cols-3 gap-6">
           {filtrados.map((prof, idx) => (
             <div
@@ -68,7 +66,6 @@ export default function PresupuestoSection() {
                 selected.includes(prof.nombre) ? "border-2 border-blue-600" : ""
               }`}
             >
-              {/* Imagen y nombre */}
               <div className="flex items-center gap-4">
                 <img
                   src={prof.foto}
@@ -80,7 +77,6 @@ export default function PresupuestoSection() {
                 </h3>
               </div>
 
-              {/* Datos del profesional */}
               <div className="flex items-center gap-2 text-black mt-2">
                 <Phone size={16} /> <span>{prof.contacto}</span>
               </div>
@@ -92,7 +88,6 @@ export default function PresupuestoSection() {
                 ${prof.precio.toLocaleString()} COP/hora
               </p>
 
-              {/* Botón de acción */}
               <button
                 className={`w-full rounded-2xl shadow-md px-4 py-2 font-medium transition ${
                   selected.includes(prof.nombre)
@@ -109,7 +104,6 @@ export default function PresupuestoSection() {
           ))}
         </div>
 
-        {/* Panel de comparación */}
         {selected.length > 0 && (
           <div className="mt-10 text-center bg-blue-50 border border-blue-200 p-6 rounded-2xl shadow-sm">
             <h3 className="text-xl font-bold mb-4 text-blue-700">

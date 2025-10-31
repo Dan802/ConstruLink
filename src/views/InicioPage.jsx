@@ -1,141 +1,105 @@
+import { Target, Eye } from "lucide-react";
+
 export default function InicioPage() {
   return (
-    <div className="min-h-screen p-6 bg-gray-200">
-      <div className="max-w-6xl mx-auto space-y-8">
-        <p>*Esto solo se muestra una vez iniciada la sesión*</p>
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800">
-            Gestión de Proyectos
-          </h1>
-          <button className="rounded-2xl shadow-md bg-gray-900 hover:bg-blue-900 text-white px-4 py-2">
-            Crear Proyecto
-          </button>
-        </div>
+    <div className="text-gray-800 bg-gray-100">
 
-        {/* Proyectos */}
-        <div className="rounded-2xl shadow-sm border border-blue-200 bg-white">
-          <div className="p-4">
-            <h2 className="text-xl font-semibold mb-4 text-blue-700">Proyectos</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="text-left text-blue-800 bg-blue-50">
-                    <th className="p-2 border-b">ID</th>
-                    <th className="p-2 border-b">Nombre</th>
-                    <th className="p-2 border-b">Descripción</th>
-                    <th className="p-2 border-b">Etiquetas</th>
-                    <th className="p-2 border-b">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="hover:bg-blue-50">
-                    <td className="p-2 border-b">1</td>
-                    <td className="p-2 border-b font-medium text-black">Edificio Central</td>
-                    <td className="p-2 border-b text-black">
-                      Construcción de oficinas corporativas
-                    </td>
-                    <td className="p-2 border-b">
-                      <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded">
-                        Estructura
-                      </span>
-                    </td>
-                    <td className="p-2 border-b space-x-2">
-                      <button className="px-3 py-1 text-blue-600 border border-blue-500 rounded hover:bg-blue-50">
-                        Editar
-                      </button>
-                      <button className="px-3 py-1 text-white bg-red-600 hover:bg-red-700 rounded">
-                        Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-blue-50">
-                    <td className="p-2 border-b">2</td>
-                    <td className="p-2 border-b font-medium text-black">
-                      Urbanización Los Pinos
-                    </td>
-                    <td className="p-2 border-b text-black">
-                      Desarrollo de viviendas familiares
-                    </td>
-                    <td className="p-2 border-b">
-                      <span className="bg-green-100 text-green-600 px-2 py-1 rounded">
-                        Residencial
-                      </span>
-                    </td>
-                    <td className="p-2 border-b space-x-2">
-                      <button className="px-3 py-1 text-blue-600 border border-blue-500 rounded hover:bg-blue-50">
-                        Editar
-                      </button>
-                      <button className="px-3 py-1 text-white bg-red-600 hover:bg-red-700 rounded">
-                        Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+      <section className="bg-blue-100 py-20 text-center">
+        <div className="max-w-4xl m-auto">
+          <h2 className="text-4xl  md:text-5xl font-bold text-blue-800 mb-4">
+            Conectamos Clientes con Profesionales en Construcción y Renovación
+          </h2>
+        </div>
+        <p className="text-lg max-w-2xl mx-auto text-gray-700 mb-6">
+          Encuentra expertos calificados para transformar tus espacios con calidad, innovación y confianza.
+        </p>
+        <a
+          href="/registro"
+          className="bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-800 transition"
+        >
+          Regístrate ahora
+        </a>
+      </section>
+
+      <section id="descripcion" className="py-16 px-6 max-w-6xl mx-auto ">
+        <h3 className="text-3xl font-bold text-blue-700 mb-6">Sobre el Sistema</h3>
+        <p className="text-lg leading-relaxed text-gray-700 mb-6">
+          <strong>ConstruLink</strong> es una plataforma web diseñada para conectar clientes con profesionales
+          altamente cualificados en construcción, renovación y diseño de interiores. La aplicación actúa como un
+          intermediario eficaz, facilitando la promoción de servicios, exhibiendo portafolios de profesionales y
+          estableciendo un canal de comunicación directo entre clientes y expertos del sector.
+        </p>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
+            <h4 className="text-xl font-semibold text-blue-700 mb-2">Accesibilidad</h4>
+            <p>Plataforma accesible desde cualquier dispositivo con conexión a internet y navegadores modernos.</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
+            <h4 className="text-xl font-semibold text-blue-700 mb-2">Interfaz Intuitiva</h4>
+            <p>Diseño fácil de usar que simplifica la búsqueda de profesionales y la gestión de proyectos.</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
+            <h4 className="text-xl font-semibold text-blue-700 mb-2">Seguridad</h4>
+            <p>Protección de datos y transacciones mediante medidas de seguridad avanzadas.</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
+            <h4 className="text-xl font-semibold text-blue-700 mb-2">Escalabilidad</h4>
+            <p>Adaptable a diversos tamaños de proyectos y a un número creciente de usuarios y profesionales.</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
+            <h4 className="text-xl font-semibold text-blue-700 mb-2">Integraciones</h4>
+            <p>Compatible con herramientas de gestión, calendarios y plataformas de pago.</p>
           </div>
         </div>
+      </section>
 
-        {/* Tareas */}
-        <div className="rounded-2xl shadow-sm border border-blue-200 bg-white">
-          <div className="p-4">
-            <h2 className="text-xl font-semibold mb-4 text-blue-700">
-              Tareas Asignadas
-            </h2>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="text-left text-blue-800 bg-blue-50">
-                    <th className="p-2 border-b">ID</th>
-                    <th className="p-2 border-b">Tarea</th>
-                    <th className="p-2 border-b">Asignado a</th>
-                    <th className="p-2 border-b">Estado</th>
-                    <th className="p-2 border-b">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="hover:bg-blue-50">
-                    <td className="p-2 border-b">101</td>
-                    <td className="p-2 border-b text-black">Supervisar cimentación</td>
-                    <td className="p-2 border-b text-black">Ing. Pérez</td>
-                    <td className="p-2 border-b">
-                      <span className="bg-yellow-100 text-yellow-600 px-2 py-1 rounded">
-                        Pendiente
-                      </span>
-                    </td>
-                    <td className="p-2 border-b space-x-2">
-                      <button className="px-3 py-1 text-blue-600 border border-blue-500 rounded hover:bg-blue-50">
-                        Editar
-                      </button>
-                      <button className="px-3 py-1 text-white bg-red-600 hover:bg-red-700 rounded">
-                        Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-blue-50">
-                    <td className="p-2 border-b">102</td>
-                    <td className="p-2 border-b text-black">Instalar sistemas eléctricos</td>
-                    <td className="p-2 border-b text-black">Tec. Ramírez</td>
-                    <td className="p-2 border-b">
-                      <span className="bg-green-100 text-green-600 px-2 py-1 rounded">
-                        Completada
-                      </span>
-                    </td>
-                    <td className="p-2 border-b space-x-2">
-                      <button className="px-3 py-1 text-blue-600 border border-blue-500 rounded hover:bg-blue-50">
-                        Editar
-                      </button>
-                      <button className="px-3 py-1 text-white bg-red-600 hover:bg-red-700 rounded">
-                        Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+      <section id="mision" className="py-20 px-6 bg-gray-50">
+        <div className="max-w-6xl mx-auto text-center mb-10">
+          <h3 className="text-3xl font-bold text-blue-700 mb-2">Nuestros Principios</h3>
+          <p className="text-gray-600">Misión y visión que guían cada proyecto en ConstruLink</p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <div className="bg-blue-50 border border-blue-200 rounded-2xl p-8 shadow-sm hover:shadow-lg transition">
+            <div className="flex items-center justify-center mb-4">
+              <div className="bg-blue-600 p-3 rounded-full text-white">
+                <Target size={28} />
+              </div>
             </div>
+            <h4 className="text-2xl font-bold text-blue-700 mb-3">Misión</h4>
+            <p className="text-gray-700 leading-relaxed">
+              En <strong>ConstruLink</strong>, nuestra misión es transformar y mejorar espacios residenciales y
+              comerciales a través de soluciones de construcción y renovación personalizadas, innovadoras y de alta
+              calidad. Estamos comprometidos a brindar un servicio excepcional, superar las expectativas del cliente
+              y contribuir al desarrollo de ambientes funcionales y estéticamente atractivos, respaldados por nuestro
+              experimentado y dedicado equipo de profesionales.
+            </p>
+          </div>
+
+          <div className="bg-blue-50 border border-blue-200 rounded-2xl p-8 shadow-sm hover:shadow-lg transition">
+            <div className="flex items-center justify-center mb-4">
+              <div className="bg-blue-600 p-3 rounded-full text-white">
+                <Eye size={28} />
+              </div>
+            </div>
+            <h4 className="text-2xl font-bold text-blue-700 mb-3">Visión</h4>
+            <p className="text-gray-700 leading-relaxed">
+              La visión de <strong>ConstruLink</strong> es ser líder en la industria de la construcción y remodelación,
+              reconocidos por nuestra excelencia en diseño, calidad y servicio al cliente. Aspiramos a innovar
+              continuamente en tecnología y materiales para crear espacios que no solo satisfagan las necesidades
+              funcionales de nuestros clientes, sino que también reflejen sus deseos estéticos y de bienestar.
+              Queremos construir un futuro donde cada proyecto sea un reflejo de nuestra búsqueda de la perfección y
+              la completa satisfacción del cliente.
+            </p>
           </div>
         </div>
-      </div>
+      </section>
+
     </div>
   );
 }
