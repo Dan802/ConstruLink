@@ -1,15 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Phone, Wrench } from "lucide-react";
-import { profesionales } from "../data/profesionales";
-
-//! TODO
-// LA INFO DE LOS PROFESIONALES NOS LA DEBE DAR UNA API 
-// Provisional (data/profesionales.js)
+import { profesionales as profesionalesData } from "../data/profesionales";
+import { professionals } from "../services/api";
 
 export default function PresupuestoSection() {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
+  const [profesionalesAPI, setProfesionalesAPI] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadProfessionals = async () => {
+      try {
+        setLoading(true);
+        const { data } = await professionals.getAll();
+        // Combinar profesionales de API con los locales (provisionales)
+        // Elimina duplicados por nombre
+        const apiProfs = data || [];
+        const combined = [...profesionalesData];
+        
+        apiProfs.forEach(apiProf => {
+          const exists = combined.find(p => 
+            p.nombre?.toLowerCase() === apiProf.nombre?.toLowerCase()
+          );
+          if (!exists) {
+            // Formatear profesional de API al formato esperado
+            combined.push({
+              nombre: apiProf.nombre,
+              foto: apiProf.foto || "https://i.pravatar.cc/80",
+              contacto: apiProf.contacto || apiProf.userId?.email || "No especificado",
+              habilidades: apiProf.habilidades || [],
+              precio: apiProf.precio || 0,
+              _id: apiProf._id
+            });
+          }
+        });
+        
+        setProfesionalesAPI(combined);
+      } catch (err) {
+        console.error("Error cargando profesionales:", err);
+        // Si falla API, usar solo los locales
+        setProfesionalesAPI(profesionalesData);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadProfessionals();
+  }, []);
 
   const toggleSeleccion = (nombre) => {
     setSelected((prev) =>
@@ -19,8 +60,17 @@ export default function PresupuestoSection() {
     );
   };
 
+  const handleContactar = (prof) => {
+    localStorage.setItem("chatWith", JSON.stringify({
+      id: prof._id || prof.nombre,
+      nombre: prof.nombre,
+      foto: prof.foto
+    }));
+    navigate("/mensajes");
+  };
+
   // Filtrar por búsqueda y filtro
-  const filtrados = profesionales
+  const filtrados = profesionalesAPI
     .filter(
       (prof) =>
         prof.nombre.toLowerCase().includes(search.toLowerCase()) ||
@@ -31,6 +81,16 @@ export default function PresupuestoSection() {
       if (filter === "desc") return b.precio - a.precio;
       return 0;
     });
+
+  if (loading) {
+    return (
+      <section className="py-16 bg-gray-200">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <p className="text-gray-600">Cargando profesionales...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16 bg-gray-200">
@@ -61,7 +121,7 @@ export default function PresupuestoSection() {
         <div className="grid md:grid-cols-3 gap-6">
           {filtrados.map((prof, idx) => (
             <div
-              key={idx}
+              key={prof._id || idx}
               className={`rounded-2xl shadow-md hover:shadow-lg transition border border-blue-200 bg-white p-6 space-y-3 ${
                 selected.includes(prof.nombre) ? "border-2 border-blue-600" : ""
               }`}
@@ -89,16 +149,10 @@ export default function PresupuestoSection() {
               </p>
 
               <button
-                className={`w-full rounded-2xl shadow-md px-4 py-2 font-medium transition ${
-                  selected.includes(prof.nombre)
-                    ? "bg-blue-400 hover:bg-blue-500 text-white"
-                    : "bg-blue-600 hover:bg-blue-700 text-white"
-                }`}
-                onClick={() => toggleSeleccion(prof.nombre)}
+                className="w-full rounded-2xl shadow-md px-4 py-2 font-medium transition bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={() => handleContactar(prof)}
               >
-                {selected.includes(prof.nombre)
-                  ? "Quitar de la comparación"
-                  : "Agregar a comparar"}
+                Contactar
               </button>
             </div>
           ))}

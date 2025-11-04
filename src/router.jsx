@@ -6,6 +6,10 @@ import Login from "./views/LoginPage.jsx"
 import Index from "./views/InicioPage.jsx"
 import Registro from "./views/RegistroPage.jsx"
 import Admin from "./views/AdminPage.jsx"
+import PerfilPage from "./views/PerfilPage";
+import CrearSolicitudPage from "./views/CrearSolicitudPage.jsx";
+import SolicitudesPage from "./views/SolicitudesPage";
+import MensajesPage from "./views/MensajesPage";
 
 export default function AppRouter() {
   return (
@@ -24,6 +28,13 @@ export default function AppRouter() {
 
           <Route path="/admin" element={<Admin />} />
 
+          <Route path="/perfil" element={<PerfilPage />} />
+
+          <Route path="/crear-solicitud" element={<CrearSolicitudPage />} />
+
+          <Route path="/solicitudes" element={<SolicitudesPage />} />
+
+          <Route path="/mensajes" element={<MensajesPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
