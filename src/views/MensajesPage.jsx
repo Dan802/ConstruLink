@@ -52,9 +52,6 @@ export default function MensajesPage() {
     }
   }, [navigate]);
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
 
   const loadMessages = (chatId) => {
     const key = `chat_${chatId}`;
@@ -139,7 +136,7 @@ export default function MensajesPage() {
   }
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+    <div className="flex h-[90vh] bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 ">
       {/* Sidebar - Lista de chats */}
       <div className="w-80 bg-white border-r border-gray-200 flex flex-col shadow-lg">
         <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-indigo-600 to-purple-600">

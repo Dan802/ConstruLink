@@ -27,7 +27,7 @@ export default function CrearSolicitudPage() {
       console.log("Solicitud creada:", data);
       setMsg("Solicitud publicada correctamente.");
       setForm({ titulo: "", descripcion: "", presupuesto: "" });
-      navigate("/profesionales");
+      navigate("/solicitudes");
     } catch (err) {
       console.error("Error publicar solicitud:", err);
       setMsg(err?.response?.data?.message || err.message || "Error al publicar solicitud");
@@ -37,7 +37,7 @@ export default function CrearSolicitudPage() {
   };
 
   return (
-    <div className="container mx-auto py-10 px-4 max-w-2xl">
+    <div className="container mx-auto py-10 px-4 max-w-2xl h-[60vh]">
       <h2 className="text-2xl font-bold mb-4">Crear solicitud de trabajo</h2>
 
       {msg && <div className="mb-4 p-3 bg-green-100 text-green-800 rounded">{msg}</div>}

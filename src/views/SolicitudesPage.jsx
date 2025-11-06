@@ -1,33 +1,42 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { requests } from "../services/api";
-import { Briefcase, DollarSign, User, Calendar } from "lucide-react";
+import { Briefcase, DollarSign, User, Calendar, Trash2} from "lucide-react";
 
 export default function SolicitudesPage() {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [msg, setMsg] = useState(null);
+
+  const load = async () => {
+    try {
+      setLoading(true);
+      const { data } = await requests.getAll();
+      setList(data || []);
+    } catch (err) {
+      console.error("Error cargando solicitudes:", err);
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "Error al cargar solicitudes"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        setLoading(true);
-        const { data } = await requests.getAll();
-        setList(data || []);
-      } catch (err) {
-        console.error("Error cargando solicitudes:", err);
-        setError(err.response?.data?.message || err.message || "Error al cargar solicitudes");
-      } finally {
-        setLoading(false);
-      }
-    };
     load();
   }, []);
 
   const formatPrice = (p) => {
     if (!p && p !== 0) return "No especificado";
-    return new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP" }).format(p);
+    return new Intl.NumberFormat("es-CO", {
+      style: "currency",
+      currency: "COP",
+    }).format(p);
   };
 
   const handleContactar = (solicitud) => {
@@ -38,15 +47,52 @@ export default function SolicitudesPage() {
     }
 
     // Guardar info del cliente para el chat
-    localStorage.setItem("chatWith", JSON.stringify({
-      id: solicitud.userId._id || solicitud.userId,
-      nombre: solicitud.userId.name || "Cliente",
-      foto: solicitud.userId.foto || "https://i.pravatar.cc/80",
-      solicitudId: solicitud._id,
-      tituloSolicitud: solicitud.titulo
-    }));
-    
+    localStorage.setItem(
+      "chatWith",
+      JSON.stringify({
+        id: solicitud.userId._id || solicitud.userId,
+        nombre: solicitud.userId.name || "Cliente",
+        foto: solicitud.userId.foto || "https://i.pravatar.cc/80",
+        solicitudId: solicitud._id,
+        tituloSolicitud: solicitud.titulo,
+      })
+    );
+
     navigate("/mensajes");
+  };
+
+  const handleEliminar = async (solicitud) => {
+    try {
+      const { _id: id } = solicitud;
+      await requests.deleteById(id);
+      setMsg("Solicitud eliminada correctamente.");
+
+      setTimeout(async () => {
+        setMsg("")
+        
+        // Recarga la lista desde la API
+        await load();
+
+      }, 1500);
+
+    } catch (error) {
+      console.error("Error al eliminar la solicitud:", error);
+
+      if (error.response) {
+        // El servidor respondió con un código de estado fuera del rango 2xx
+        setMsg(
+          `Error: ${
+            error.response.data.message || "No se pudo eliminar la solicitud."
+          }`
+        );
+      } else if (error.request) {
+        // No se recibió respuesta del servidor
+        setMsg("Error de conexión con el servidor. Intenta nuevamente.");
+      } else {
+        // Algo pasó al preparar la solicitud
+        setMsg("Error inesperado. Intenta más tarde.");
+      }
+    }
   };
 
   if (loading) {
@@ -77,15 +123,26 @@ export default function SolicitudesPage() {
               Solicitudes de Trabajo
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Explora proyectos disponibles y envía tus propuestas a los clientes
+              Explora proyectos disponibles y envía tus propuestas a los
+              clientes
             </p>
           </div>
+
+          {msg && (
+            <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-lg text-center">
+              {msg}
+            </div>
+          )}
 
           {list.length === 0 ? (
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-12 text-center">
               <Briefcase size={64} className="mx-auto text-gray-300 mb-4" />
-              <p className="text-gray-600 text-lg">No hay solicitudes publicadas aún.</p>
-              <p className="text-gray-500 text-sm mt-2">Vuelve más tarde para ver nuevos proyectos</p>
+              <p className="text-gray-600 text-lg">
+                No hay solicitudes publicadas aún.
+              </p>
+              <p className="text-gray-500 text-sm mt-2">
+                Vuelve más tarde para ver nuevos proyectos
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -126,17 +183,28 @@ export default function SolicitudesPage() {
                     {req.createdAt && (
                       <div className="flex items-center gap-2 text-gray-500 text-xs">
                         <Calendar size={14} />
-                        <span>{new Date(req.createdAt).toLocaleDateString("es-CO")}</span>
+                        <span>
+                          {new Date(req.createdAt).toLocaleDateString("es-CO")}
+                        </span>
                       </div>
                     )}
                   </div>
 
-                  <button 
-                    onClick={() => handleContactar(req)}
-                    className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-2.5 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition shadow-md"
-                  >
-                    Contactar cliente
-                  </button>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => handleContactar(req)}
+                      className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-2.5 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition shadow-md"
+                    >
+                      Contactar cliente
+                    </button>
+
+                    <button
+                      onClick={() => handleEliminar(req)}
+                      className="w-12 flex items-center justify-center bg-red-600 text-white rounded-lg hover:bg-red-700 transition shadow-md"
+                    >
+                      <Trash2 className="w-5 h-5 text-white" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>

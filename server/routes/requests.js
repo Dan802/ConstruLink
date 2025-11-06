@@ -24,4 +24,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.delete("/", async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    const deletedRequest = await Request.findByIdAndDelete(id);
+
+    if (!deletedRequest) {
+      return res.status(404).json({ message: "Solicitud no encontrada" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Solicitud eliminada correctamente", deletedRequest });
+  } catch (error) {
+    res.status(500).json({ message: "Error al eliminar la solicitud", error });
+  }
+});
+
 export default router;

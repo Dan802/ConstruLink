@@ -27,6 +27,7 @@ export const professionals = {
 export const requests = {
   create: (payload) => api.post("/requests", payload),
   getAll: () => api.get("/requests"),
+  deleteById: (id) => api.delete("/requests", { data: { id } })
 };
 
 export default api;
