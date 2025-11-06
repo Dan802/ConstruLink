@@ -10,6 +10,7 @@ export default function SolicitudesPage() {
   const navigate = useNavigate();
   const [msg, setMsg] = useState(null);
   const [logged, setLogged] = useState(Boolean(localStorage.getItem("token")));
+  console.log("el usuario esta logeado?", logged)
 
   const load = async () => {
     try {
