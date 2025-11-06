@@ -9,8 +9,7 @@ export default function SolicitudesPage() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [msg, setMsg] = useState(null);
-  let logged = false
-
+  const [logged, setLogged] = useState(false);
 
   const load = async () => {
     try {
@@ -34,8 +33,8 @@ export default function SolicitudesPage() {
 
     const token = localStorage.getItem("token");
     if (token) {
-      logged = true;
-    } 
+      setLogged(true);
+    }
   }, []);
 
   const formatPrice = (p) => {
@@ -203,7 +202,7 @@ export default function SolicitudesPage() {
                       Contactar cliente
                     </button>
 
-                    {logged ?? (
+                    {logged && (
                       <button
                         onClick={() => handleEliminar(req)}
                         className="w-12 flex items-center justify-center bg-red-600 text-white rounded-lg hover:bg-red-700 transition shadow-md"
