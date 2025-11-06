@@ -1,10 +1,10 @@
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
-console.log("LA API ESTA EN ", API_URL)
+console.log("API URL:", import.meta.env.VITE_API_URL);
 
 const api = axios.create({
-  baseURL: "https://constru-link-back-end.vercel.app",
+  baseURL: "https://constru-link-back-end.vercel.app/api",
   headers: { "Content-Type": "application/json" },
 });
 
