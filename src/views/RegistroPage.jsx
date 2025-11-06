@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, User, Phone, Briefcase, DollarSign, Lock } from "lucide-react";
+import { Mail, User, Phone, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../services/api";
 
@@ -42,53 +42,108 @@ export default function RegistroPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
-        <h1 className="text-3xl font-bold text-center text-blue-700 mb-6">Regístrate en ConstruLink</h1>
-
-        {error && <div className="mb-4 p-3 bg-red-100 text-red-600 rounded-lg">{error}</div>}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-gray-700 mb-1 font-medium">Nombre completo</label>
-            <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2">
-              <User className="text-gray-500 mr-2" size={18} />
-              <input name="nombre" type="text" placeholder="Tu nombre completo" value={formData.nombre} onChange={handleChange} className="w-full outline-none" required />
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center px-6 py-12">
+      <div className="w-full max-w-md">
+        {/* Card del formulario */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              Crear cuenta
+            </h1>
+            <p className="mt-2 text-gray-600">Únete a ConstruLink</p>
           </div>
 
-          <div>
-            <label className="block text-gray-700 mb-1 font-medium">Correo electrónico</label>
-            <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2">
-              <Mail className="text-gray-500 mr-2" size={18} />
-              <input name="correo" type="email" placeholder="ejemplo@correo.com" value={formData.correo} onChange={handleChange} className="w-full outline-none" required />
+          {error && (
+            <div className="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+              {error}
             </div>
-          </div>
+          )}
 
-          <div>
-            <label className="block text-gray-700 mb-1 font-medium">Contraseña</label>
-            <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2">
-              <Lock className="text-gray-500 mr-2" size={18} />
-              <input name="password" type="password" placeholder="Tu contraseña" value={formData.password} onChange={handleChange} className="w-full outline-none" required />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Nombre */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label>
+              <div className="relative flex items-center">
+                <User className="absolute left-3 text-gray-400" size={18} />
+                <input
+                  name="nombre"
+                  type="text"
+                  placeholder="Tu nombre"
+                  value={formData.nombre}
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition bg-gray-50"
+                  required
+                />
+              </div>
             </div>
-          </div>
 
-          <div>
-            <label className="block text-gray-700 mb-1 font-medium">Celular</label>
-            <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2">
-              <Phone className="text-gray-500 mr-2" size={18} />
-              <input name="celular" type="tel" placeholder="Número de contacto" value={formData.celular} onChange={handleChange} className="w-full outline-none" />
+            {/* Correo */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+              <div className="relative flex items-center">
+                <Mail className="absolute left-3 text-gray-400" size={18} />
+                <input
+                  name="correo"
+                  type="email"
+                  placeholder="ejemplo@correo.com"
+                  value={formData.correo}
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition bg-gray-50"
+                  required
+                />
+              </div>
             </div>
-          </div>
 
-          <button disabled={loading} type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">
-            {loading ? "Creando cuenta..." : "Crear cuenta"}
-          </button>
-        </form>
+            {/* Contraseña */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+              <div className="relative flex items-center">
+                <Lock className="absolute left-3 text-gray-400" size={18} />
+                <input
+                  name="password"
+                  type="password"
+                  placeholder="Mínimo 6 caracteres"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition bg-gray-50"
+                  required
+                />
+              </div>
+            </div>
 
-        <p className="text-center text-gray-600 text-sm mt-6">
-          ¿Ya tienes cuenta? <a href="/login" className="text-blue-600 font-medium hover:underline">Inicia sesión</a>
-        </p>
+            {/* Celular (opcional) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Celular (opcional)</label>
+              <div className="relative flex items-center">
+                <Phone className="absolute left-3 text-gray-400" size={18} />
+                <input
+                  name="celular"
+                  type="tel"
+                  placeholder="Número de contacto"
+                  value={formData.celular}
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition bg-gray-50"
+                />
+              </div>
+            </div>
+
+            {/* Botón */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-3 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+            >
+              {loading ? "Creando cuenta..." : "Crear cuenta"}
+            </button>
+          </form>
+
+          <p className="mt-6 text-center text-sm text-gray-600">
+            ¿Ya tienes cuenta?{" "}
+            <a href="/login" className="font-semibold text-indigo-600 hover:underline">
+              Inicia sesión
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );

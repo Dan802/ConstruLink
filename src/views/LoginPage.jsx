@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User, Lock } from "lucide-react";
+import { Mail, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../services/api";
 
@@ -31,37 +31,73 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-sm bg-white rounded-2xl shadow-lg p-8">
-        <h1 className="text-3xl font-bold text-center text-blue-700 mb-6">ConstruLink</h1>
-
-        {error && <div className="mb-4 p-3 bg-red-100 text-red-600 rounded-lg">{error}</div>}
-
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label className="block text-gray-700 mb-1 font-medium">Usuario</label>
-            <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2">
-              <User className="text-gray-500 mr-2" size={18} />
-              <input type="text" placeholder="Ingresa tu usuario o correo" value={usuario} onChange={(e) => setUsuario(e.target.value)} className="w-full outline-none" required />
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center px-6 py-12">
+      <div className="w-full max-w-md">
+        {/* Card del formulario */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              Iniciar sesión
+            </h1>
+            <p className="mt-2 text-gray-600">Accede a tu cuenta de ConstruLink</p>
           </div>
 
-          <div>
-            <label className="block text-gray-700 mb-1 font-medium">Contraseña</label>
-            <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2">
-              <Lock className="text-gray-500 mr-2" size={18} />
-              <input type="password" placeholder="Ingresa tu contraseña" value={contraseña} onChange={(e) => setContraseña(e.target.value)} className="w-full outline-none" required />
+          {error && (
+            <div className="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+              {error}
             </div>
-          </div>
+          )}
 
-          <button disabled={loading} type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">
-            {loading ? "Ingresando..." : "Iniciar sesión"}
-          </button>
-        </form>
+          <form onSubmit={handleLogin} className="space-y-4">
+            {/* Usuario/Email */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+              <div className="relative flex items-center">
+                <Mail className="absolute left-3 text-gray-400" size={18} />
+                <input
+                  type="email"
+                  placeholder="ejemplo@correo.com"
+                  value={usuario}
+                  onChange={(e) => setUsuario(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition bg-gray-50"
+                  required
+                />
+              </div>
+            </div>
 
-        <p className="text-center text-gray-600 text-sm mt-6">
-          ¿No tienes cuenta? <a href="/registro" className="text-blue-600 font-medium hover:underline">Regístrate</a>
-        </p>
+            {/* Contraseña */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+              <div className="relative flex items-center">
+                <Lock className="absolute left-3 text-gray-400" size={18} />
+                <input
+                  type="password"
+                  placeholder="Tu contraseña"
+                  value={contraseña}
+                  onChange={(e) => setContraseña(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition bg-gray-50"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Botón */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-3 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+            >
+              {loading ? "Ingresando..." : "Iniciar sesión"}
+            </button>
+          </form>
+
+          <p className="mt-6 text-center text-sm text-gray-600">
+            ¿No tienes cuenta?{" "}
+            <a href="/registro" className="font-semibold text-indigo-600 hover:underline">
+              Regístrate
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );

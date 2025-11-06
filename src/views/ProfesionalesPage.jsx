@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Phone, Wrench } from "lucide-react";
+import { Phone, Wrench, Search, SlidersHorizontal } from "lucide-react";
 import { profesionales as profesionalesData } from "../data/profesionales";
 import { professionals } from "../services/api";
 
-export default function PresupuestoSection() {
+export default function ProfesionalesPage() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState([]);
   const [search, setSearch] = useState("");
@@ -17,8 +17,6 @@ export default function PresupuestoSection() {
       try {
         setLoading(true);
         const { data } = await professionals.getAll();
-        // Combinar profesionales de API con los locales (provisionales)
-        // Elimina duplicados por nombre
         const apiProfs = data || [];
         const combined = [...profesionalesData];
         
@@ -27,7 +25,6 @@ export default function PresupuestoSection() {
             p.nombre?.toLowerCase() === apiProf.nombre?.toLowerCase()
           );
           if (!exists) {
-            // Formatear profesional de API al formato esperado
             combined.push({
               nombre: apiProf.nombre,
               foto: apiProf.foto || "https://i.pravatar.cc/80",
@@ -42,7 +39,6 @@ export default function PresupuestoSection() {
         setProfesionalesAPI(combined);
       } catch (err) {
         console.error("Error cargando profesionales:", err);
-        // Si falla API, usar solo los locales
         setProfesionalesAPI(profesionalesData);
       } finally {
         setLoading(false);
@@ -69,7 +65,6 @@ export default function PresupuestoSection() {
     navigate("/mensajes");
   };
 
-  // Filtrar por búsqueda y filtro
   const filtrados = profesionalesAPI
     .filter(
       (prof) =>
@@ -84,94 +79,120 @@ export default function PresupuestoSection() {
 
   if (loading) {
     return (
-      <section className="py-16 bg-gray-200">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className="text-gray-600">Cargando profesionales...</p>
-        </div>
-      </section>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center">
+        <p className="text-gray-600 text-lg">Cargando profesionales...</p>
+      </div>
     );
   }
 
   return (
-    <section className="py-16 bg-gray-200">
-      <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
-          Profesionales Disponibles
-        </h2>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+      <div className="py-16 px-6">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
+              Profesionales Disponibles
+            </h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Encuentra expertos calificados para tu proyecto
+            </p>
+          </div>
 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10">
-          <input
-            type="text"
-            placeholder="Buscar por nombre o profesión"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="md:w-1/2 border bg-gray-50 border-blue-400 focus:ring-blue-600 focus:outline-none rounded-md px-3 py-2"
-          />
+          {/* Barra de búsqueda y filtros */}
+          <div className="flex flex-col md:flex-row items-center gap-4 mb-10">
+            <div className="relative flex-1 w-full">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+              <input
+                type="text"
+                placeholder="Buscar por nombre o área"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition bg-white"
+              />
+            </div>
 
-          <select
-            onChange={(e) => setFilter(e.target.value)}
-            className="w-[200px] border bg-gray-50 border-blue-400 focus:ring-blue-600 focus:outline-none rounded-md px-3 py-2"
-          >
-            <option value="">Filtrar por...</option>
-            <option value="asc">$ Menor a mayor</option>
-            <option value="desc">$ Mayor a menor</option>
-          </select>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {filtrados.map((prof, idx) => (
-            <div
-              key={prof._id || idx}
-              className={`rounded-2xl shadow-md hover:shadow-lg transition border border-blue-200 bg-white p-6 space-y-3 ${
-                selected.includes(prof.nombre) ? "border-2 border-blue-600" : ""
-              }`}
-            >
-              <div className="flex items-center gap-4">
-                <img
-                  src={prof.foto}
-                  alt={prof.nombre}
-                  className="w-12 h-12 rounded-full border border-blue-300 object-cover"
-                />
-                <h3 className="font-semibold text-lg text-black">
-                  {prof.nombre}
-                </h3>
-              </div>
-
-              <div className="flex items-center gap-2 text-black mt-2">
-                <Phone size={16} /> <span>{prof.contacto}</span>
-              </div>
-              <div className="flex items-center gap-2 text-black">
-                <Wrench size={16} />
-                <span>{prof.habilidades.join(", ")}</span>
-              </div>
-              <p className="text-blue-700 font-semibold">
-                ${prof.precio.toLocaleString()} COP/hora
-              </p>
-
-              <button
-                className="w-full rounded-2xl shadow-md px-4 py-2 font-medium transition bg-blue-600 hover:bg-blue-700 text-white"
-                onClick={() => handleContactar(prof)}
+            <div className="relative w-full md:w-64">
+              <SlidersHorizontal className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+              <select
+                onChange={(e) => setFilter(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition bg-white appearance-none cursor-pointer"
               >
-                Contactar
+                <option value="">Filtrar por precio</option>
+                <option value="asc">Menor a mayor</option>
+                <option value="desc">Mayor a menor</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Grid de profesionales */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filtrados.map((prof, idx) => (
+              <div
+                key={prof._id || idx}
+                className={`bg-white rounded-2xl shadow-md border overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ${
+                  selected.includes(prof.nombre) ? "border-indigo-500 ring-2 ring-indigo-200" : "border-gray-100"
+                }`}
+              >
+                <div className="p-6 space-y-4">
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={prof.foto}
+                      alt={prof.nombre}
+                      className="w-16 h-16 rounded-full border-2 border-indigo-100 object-cover"
+                    />
+                    <div>
+                      <h3 className="font-bold text-lg text-gray-800">
+                        {prof.nombre}
+                      </h3>
+                      <p className="text-sm text-gray-500">{prof.habilidades[0]}</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-gray-600 text-sm">
+                      <Wrench size={16} className="text-indigo-500" />
+                      <span>{prof.habilidades.join(", ")}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-600 text-sm">
+                      <Phone size={16} className="text-indigo-500" />
+                      <span>{prof.contacto}</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-gray-100">
+                    <p className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                      ${prof.precio.toLocaleString()} COP/hora
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => handleContactar(prof)}
+                    className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-2.5 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition shadow-md"
+                  >
+                    Contactar
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Comparación (opcional) */}
+          {selected.length > 0 && (
+            <div className="mt-12 bg-white border border-indigo-100 rounded-2xl shadow-lg p-8">
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
+                Comparando {selected.length} profesionales
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Has seleccionado: {selected.join(", ")}
+              </p>
+              <button className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold px-6 py-3 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition shadow-md">
+                Ver comparación detallada
               </button>
             </div>
-          ))}
+          )}
         </div>
-
-        {selected.length > 0 && (
-          <div className="mt-10 text-center bg-blue-50 border border-blue-200 p-6 rounded-2xl shadow-sm">
-            <h3 className="text-xl font-bold mb-4 text-blue-700">
-              Comparando {selected.length} profesionales
-            </h3>
-            <p className="text-black">
-              Has seleccionado: {selected.join(", ")}
-            </p>
-            <button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl shadow-md px-4 py-2">
-              Ver comparación detallada
-            </button>
-          </div>
-        )}
       </div>
-    </section>
+    </div>
   );
 }
