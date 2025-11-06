@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { requests } from "../services/api";
-import { Briefcase, DollarSign, User, Calendar, Trash2} from "lucide-react";
+import { Briefcase, DollarSign, User, Calendar, Trash2 } from "lucide-react";
+const [logged, setLogged] = useState(Boolean(localStorage.getItem("token")));
+console.log("el usuario esta logeado?", logged);
 
 export default function SolicitudesPage() {
   const [list, setList] = useState([]);
@@ -68,13 +70,11 @@ export default function SolicitudesPage() {
       setMsg("Solicitud eliminada correctamente.");
 
       setTimeout(async () => {
-        setMsg("")
-        
+        setMsg("");
+
         // Recarga la lista desde la API
         await load();
-
       }, 1500);
-
     } catch (error) {
       console.error("Error al eliminar la solicitud:", error);
 
@@ -198,12 +198,14 @@ export default function SolicitudesPage() {
                       Contactar cliente
                     </button>
 
-                    <button
-                      onClick={() => handleEliminar(req)}
-                      className="w-12 flex items-center justify-center bg-red-600 text-white rounded-lg hover:bg-red-700 transition shadow-md"
-                    >
-                      <Trash2 className="w-5 h-5 text-white" />
-                    </button>
+                    {logged ?? (
+                      <button
+                        onClick={() => handleEliminar(req)}
+                        className="w-12 flex items-center justify-center bg-red-600 text-white rounded-lg hover:bg-red-700 transition shadow-md"
+                      >
+                        <Trash2 className="w-5 h-5 text-white" />
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
