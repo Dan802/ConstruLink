@@ -30,13 +30,6 @@ export default function SolicitudesPage() {
 
   useEffect(() => {
     load();
-
-    const token = localStorage.getItem("token");
-    if (token) {
-      setLogged(true);
-    } else {
-      setLogged(false);
-    }
   }, []);
 
   const formatPrice = (p) => {

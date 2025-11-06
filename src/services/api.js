@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
 console.log("API URL:", import.meta.env.VITE_API_URL);
 
 const api = axios.create({
-  baseURL: "https://constru-link-back-end.vercel.app/api",
+  baseURL: import.meta.env.VITE_API_URL,
   headers: { "Content-Type": "application/json" },
 });
 
